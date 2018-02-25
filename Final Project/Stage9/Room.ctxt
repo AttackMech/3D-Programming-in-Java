@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.params=observer
+comment0.target=Room(java.awt.Component)
+comment1.params=
+comment1.target=javax.media.j3d.Shape3D\ makeFloor()
+comment2.params=
+comment2.target=javax.media.j3d.Shape3D\ makeCeiling()
+comment3.params=
+comment3.target=javax.media.j3d.Shape3D\ makeWalls()
+comment4.params=filename
+comment4.target=boolean\ getTexImage(java.lang.String)
+comment5.params=
+comment5.target=javax.media.j3d.BranchGroup\ getBG()
+numComments=6

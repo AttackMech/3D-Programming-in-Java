@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.params=args
+comment0.target=RGBObjects(java.lang.String[])
+comment1.params=x\ y\ z
+comment1.target=javax.media.j3d.TransformGroup\ createTG(float,\ float,\ float)
+comment2.params=dColor\ sColor\ shine
+comment2.target=javax.media.j3d.Appearance\ createMatAppear(javax.vecmath.Color3f,\ javax.vecmath.Color3f,\ float)
+comment3.params=s
+comment3.target=int\ isInteger(java.lang.String)
+comment4.params=args
+comment4.target=void\ main(java.lang.String[])
+numComments=5

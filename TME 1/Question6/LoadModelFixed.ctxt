@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.params=fileName
+comment0.target=LoadModelFixed(java.lang.String)
+comment1.params=loadedBG
+comment1.target=javax.vecmath.Vector3d\ calcScaleFactor(javax.media.j3d.BranchGroup)
+comment2.params=node
+comment2.target=void\ adjustModel(javax.media.j3d.Node)
+comment3.params=shape
+comment3.target=void\ makePink(javax.media.j3d.Shape3D)
+comment4.params=
+comment4.target=javax.media.j3d.TransformGroup\ getModel()
+numComments=5

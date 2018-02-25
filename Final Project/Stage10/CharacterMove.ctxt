@@ -1,0 +1,26 @@
+#BlueJ class context
+comment0.params=targetTG\ rotTG\ radius
+comment0.target=CharacterMove(javax.media.j3d.TransformGroup,\ javax.media.j3d.TransformGroup,\ float)
+comment1.params=
+comment1.target=void\ initialize()
+comment10.params=bounds
+comment10.target=void\ addObstacleBounds(javax.media.j3d.Bounds)
+comment11.params=b
+comment11.target=void\ addBall(Ball)
+comment2.params=criteria
+comment2.target=void\ processStimulus(java.util.Enumeration)
+comment3.params=eventKey
+comment3.target=void\ processKeyEvent(java.awt.event.KeyEvent)
+comment4.params=x\ z
+comment4.target=void\ doMove(float,\ float)
+comment5.params=move\ current
+comment5.target=boolean\ testMove(javax.vecmath.Vector3f,\ javax.vecmath.Vector3f)
+comment6.params=direction
+comment6.target=void\ rotateCharacter(double)
+comment7.params=
+comment7.target=void\ jump()
+comment8.params=
+comment8.target=void\ getNewJump()
+comment9.params=
+comment9.target=void\ playSound()
+numComments=12

@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.params=targetTB
+comment0.target=Gravity(TennisBall)
+comment1.params=
+comment1.target=void\ initialize()
+comment2.params=criteria
+comment2.target=void\ processStimulus(java.util.Enumeration)
+comment3.params=eventKey
+comment3.target=void\ processKeyEvent(java.awt.event.KeyEvent)
+comment4.params=
+comment4.target=void\ fall()
+comment5.params=
+comment5.target=void\ testMove()
+comment6.params=
+comment6.target=void\ getNewHeight()
+comment7.params=
+comment7.target=float\ getXDist()
+comment8.params=
+comment8.target=void\ rotateBall()
+comment9.params=
+comment9.target=void\ finishRoll()
+numComments=10

@@ -1,0 +1,6 @@
+#BlueJ class context
+comment0.params=fileName
+comment0.target=LoadModel(java.lang.String)
+comment1.params=
+comment1.target=javax.media.j3d.BranchGroup\ getModel()
+numComments=2

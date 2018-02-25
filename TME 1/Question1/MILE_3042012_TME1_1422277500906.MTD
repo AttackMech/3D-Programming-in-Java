@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mile>
+	<session_info>
+		<session_id>
+			1422277500906
+		</session_id>
+		<student_id>
+			3042012
+		</student_id>
+		<assignment>
+			TME1
+		</assignment>
+		<local_path>
+			C:\Documents and Settings\Jason Bishop\My Documents\Dropbox\COMP382\TME1\Question1
+		</local_path>
+	</session_info>
+	<session_data>
+		<compile_instance>
+			<iTime>
+				1337015
+			</iTime>
+			<fName>
+				MyOwn3D.java
+			</fName>
+			<fSize>
+				8568.0
+			</fSize>
+			<fData>
+/**
+*   Title: MyOwn3D.java
+*   Description: A 3D environment representing a room with 4 walls and a floor with grid lines
+*   Date: December 13, 2014
+*   Author: Jason Bishop
+*   Student #: 3042012
+*   Version: 2.0
+*
+*
+*   DOCUMENTATION
+*
+*   Program Purpose:
+*   Notes:
+*   Classes:
+*   Variables:
+*
+*
+*   TEST PLAN
+*
+*   Normal case:
+*   Bad Data case 1 
+*   Discussion:
+*
+*/ 
+
+import java.applet.Applet;
+import java.awt.*;
+import com.sun.j3d.utils.applet.MainFrame; 
+import com.sun.j3d.utils.universe.*;
+import javax.media.j3d.*;
+import javax.vecmath.*;
+import com.sun.j3d.utils.geometry.*;
+import com.sun.j3d.utils.behaviors.vp.*;
+
+public class MyOwn3D extends Applet {
+    
+    private BoundingSphere bounds  = new BoundingSphere();   // for environment nodes
+    private SimpleUniverse su;
+    
+    // constructor
+    public MyOwn3D() {
+        
+        setLayout(new BorderLayout());
+        GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
+        Canvas3D c3d = new Canvas3D(config);
+        add("Center", c3d);
+        
+        BranchGroup scene = createSceneGraph();
+        scene.compile();
+        
+        su = new SimpleUniverse(c3d);
+        initUserPosition();        // set user's viewpoint
+        orbitControls(c3d);   // controls for moving the viewpoint
+        su.addBranchGraph(scene);
+    } // end of constructor
+
+    
+    private BranchGroup createSceneGraph() {
+        
+        BranchGroup objRoot = new BranchGroup();  // root of visual objects in scene graph
+        
+        Color3f blue = new Color3f(0.0f, 0.1f, 0.4f);  // solid color blue for coloring sides and floor
+        
+        // create the sides and floor
+        TransformGroup floor = makeFace("floor", blue);
+        TransformGroup back = makeFace("back", blue);
+        TransformGroup front = makeFace("front", blue);
+        TransformGroup left = makeFace("left", blue);
+        TransformGroup right = makeFace("right", blue);
+        // TransformGroup ceiling = makeFace("ceiling", new Color3f(1.0f, 1.0f, 1.0f));  // white
+        
+        // create lines to divide surfaces into 3x3 grids
+        Shape3D grid = makeGrid();
+        
+        // add children to root branch graph
+        objRoot.addChild(floor);
+        objRoot.addChild(back);
+        objRoot.addChild(left);
+        objRoot.addChild(right);
+        objRoot.addChild(front);
+        // objRoot.addChild(ceiling);
+        objRoot.addChild(grid);
+        
+        return objRoot;
+    } // end of method
+
+    // method to create sides and floor of a room
+    private TransformGroup makeFace(String face, Color3f faceColor) {
+        
+        // create standard QuadArray with coordinates for basic surface
+        QuadArray qa = new QuadArray(4, QuadArray.COORDINATES);
+        qa.setCoordinate(0, new Point3f(-15f, 0f, 15f));
+        qa.setCoordinate(1, new Point3f(15f, 0f, 15f));
+        qa.setCoordinate(2, new Point3f(15f, 0f, -15f));
+        qa.setCoordinate(3, new Point3f(-15f, 0f, -15f));
+        
+        // set color for created quad
+        ColoringAttributes ca = new ColoringAttributes(faceColor, 1);
+        Appearance appear = new Appearance();
+        appear.setColoringAttributes(ca);
+        Shape3D shape = new Shape3D(qa, appear);
+        
+        // create ability to transform and translate surface to correct position
+        TransformGroup tg = new TransformGroup();
+        Transform3D t3d = new Transform3D();
+        Transform3D rotate = new Transform3D();
+        
+        // create surface based on input paramaters
+        // surfaces are off by a factor of 0.005 to allow grid lines to be more visible
+        switch (face) {
+            case "floor": t3d.setTranslation(new Vector3f(0f, -15.005f, 0f));
+                tg.setTransform(t3d);
+                tg.addChild(shape);
+                break;
+            case "ceiling": t3d.rotX(Math.PI);
+                t3d.setTranslation(new Vector3f(0f, 15.005f, 0f));                
+                tg.setTransform(t3d);
+                tg.addChild(shape);
+                break;
+            case "left": t3d.rotZ(-Math.PI/2);
+                t3d.setTranslation(new Vector3f(-15.005f, 0f, 0f));
+                tg.setTransform(t3d);
+                tg.addChild(shape);
+                break;
+            case "right": t3d.rotZ(Math.PI/2);
+                t3d.setTranslation(new Vector3f(15.005f, 0f, 0f));
+                tg.setTransform(t3d);
+                tg.addChild(shape);
+                break;
+            case "front": t3d.rotX(-Math.PI/2);
+                t3d.setTranslation(new Vector3f(0f, 0f, 15.005f));                
+                tg.setTransform(t3d);
+                tg.addChild(shape);
+                break;
+            case "back": t3d.rotX(Math.PI/2);
+                t3d.setTranslation(new Vector3f(0f, 0f, -15.005f));                
+                tg.setTransform(t3d);
+                tg.addChild(shape);
+                break;
+            default: return null;
+        }
+        return tg;
+    } // end of makeFace method
+    
+    // makes lines to divide constructed area into 3x3 grid for each side
+    private Shape3D makeGrid() {
+        
+        // set up initial coordinates for z plane grid lines
+        Point3f[] gridCoords = new Point3f[47];
+        gridCoords[0] = new Point3f(-15f, 15f, 15f);
+        gridCoords[1] = new Point3f(-15f, -15f, 15f);
+        gridCoords[2] = new Point3f(15f, -15f, 15f);
+        gridCoords[3] = new Point3f(15f, 15f, 15f);
+        
+        // create remaining grid lines through z plane
+        Point3f adjust = new Point3f(0, 0, -10);
+        for (int i = 4; i < 16; i++) {
+            gridCoords[i] = new Point3f(gridCoords[i - 4]);
+            gridCoords[i].add(adjust);
+        }
+        
+        // set up initial coordinates for x plane grid lines
+        gridCoords[16] = new Point3f(gridCoords[3]);
+        gridCoords[17] = new Point3f(gridCoords[2]);
+        gridCoords[18] = new Point3f(gridCoords[14]);
+        gridCoords[19] = new Point3f(gridCoords[15]);
+        
+        // create remaining grid lines through x plane
+        adjust = new Point3f(-10, 0, 0);
+        for (int i = 20; i < 32; i++) {
+            gridCoords[i] = new Point3f(gridCoords[i - 4]);
+            gridCoords[i].add(adjust);
+        }
+        
+        // set up initial coordinates for y plane grid lines
+        gridCoords[32] = new Point3f(gridCoords[0]);
+        gridCoords[33] = new Point3f(gridCoords[3]);
+        gridCoords[34] = new Point3f(gridCoords[15]);
+        gridCoords[35] = new Point3f(gridCoords[12]);
+        gridCoords[36] = new Point3f(gridCoords[0]);
+        
+        // create remaining grid lines through y plane
+        adjust = new Point3f(0, -10, 0);
+        for (int i = 37; i < 47; i++) {
+            gridCoords[i] = new Point3f(gridCoords[i - 5]);
+            gridCoords[i].add(adjust);
+        }
+        
+        // create array for vertex counts in LineStripArray
+        int[] lineCounts = new int[11];
+        for (int i = 0; i < lineCounts.length; i++) {
+            if (i < 8) {lineCounts[i] = 4;}
+            else {lineCounts[i] = 5;}
+        }
+        
+        // create LineStripArray object to create lines
+        LineStripArray grid = new LineStripArray(47, LineStripArray.COORDINATES, lineCounts);
+        for (int i = 0; i < gridCoords.length; i++) {
+            grid.setCoordinate(i, gridCoords[i]);
+        }
+        
+        return new Shape3D(grid);
+    } // end of makeGrid method
+    
+    private void orbitControls(Canvas3D c)
+    /* OrbitBehaviour allows the user to rotate around the scene, and to
+     zoom in and out.  */
+    {
+        OrbitBehavior orbit = 
+            new OrbitBehavior(c, OrbitBehavior.REVERSE_ALL);
+        orbit.setSchedulingBounds(bounds);
+
+        ViewingPlatform vp = su.getViewingPlatform();
+        vp.setViewPlatformBehavior(orbit);      
+    } // end of orbitControls()
+
+    private void initUserPosition()
+    // Set the user's initial viewpoint using lookAt()
+    {
+        ViewingPlatform vp = su.getViewingPlatform();
+        TransformGroup steerTG = vp.getViewPlatformTransform();
+
+        Transform3D t3d = new Transform3D();
+        steerTG.getTransform(t3d);
+
+        // args are: viewer posn, where looking, up direction
+        t3d.lookAt( new Point3d(0,5,20), new Point3d(0,0,0), new Vector3d(0,1,0));
+        t3d.invert();
+
+        steerTG.setTransform(t3d);
+    } // end of initUserPosition()
+  
+    public static void main(String args[]) {
+        Frame frame = new MainFrame(new MyOwn3D(), 256, 256);
+    } // end of main
+} // end of class
+
+			</fData>
+			<iStatus>
+				SUCCESS
+			<iStatus>
+		</compile_instance>
+	</session_data>
+	<session_data>
+		<compile_instance>
+			<iTime>
+				1645500
+			</iTime>
+			<fName>
+				MyOwn3D.java
+			</fName>
+			<fSize>
+				8568.0
+			</fSize>
+			<fData>
+/**
+*   Title: MyOwn3D.java
+*   Description: A 3D environment representing a room with 4 walls and a floor with grid lines
+*   Date: December 13, 2014
+*   Author: Jason Bishop
+*   Student #: 3042012
+*   Version: 2.0
+*
+*
+*   DOCUMENTATION
+*
+*   Program Purpose:
+*   Notes:
+*   Classes:
+*   Variables:
+*
+*
+*   TEST PLAN
+*
+*   Normal case:
+*   Bad Data case 1 
+*   Discussion:
+*
+*/ 
+
+import java.applet.Applet;
+import java.awt.*;
+import com.sun.j3d.utils.applet.MainFrame; 
+import com.sun.j3d.utils.universe.*;
+import javax.media.j3d.*;
+import javax.vecmath.*;
+import com.sun.j3d.utils.geometry.*;
+import com.sun.j3d.utils.behaviors.vp.*;
+
+public class MyOwn3D extends Applet {
+    
+    private BoundingSphere bounds  = new BoundingSphere();   // for environment nodes
+    private SimpleUniverse su;
+    
+    // constructor
+    public MyOwn3D() {
+        
+        setLayout(new BorderLayout());
+        GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
+        Canvas3D c3d = new Canvas3D(config);
+        add("Center", c3d);
+        
+        BranchGroup scene = createSceneGraph();
+        scene.compile();
+        
+        su = new SimpleUniverse(c3d);
+        initUserPosition();        // set user's viewpoint
+        orbitControls(c3d);   // controls for moving the viewpoint
+        su.addBranchGraph(scene);
+    } // end of constructor
+
+    
+    private BranchGroup createSceneGraph() {
+        
+        BranchGroup objRoot = new BranchGroup();  // root of visual objects in scene graph
+        
+        Color3f blue = new Color3f(0.0f, 0.1f, 0.4f);  // solid color blue for coloring sides and floor
+        
+        // create the sides and floor
+        TransformGroup floor = makeFace("floor", blue);
+        TransformGroup back = makeFace("back", blue);
+        TransformGroup front = makeFace("front", blue);
+        TransformGroup left = makeFace("left", blue);
+        TransformGroup right = makeFace("right", blue);
+        // TransformGroup ceiling = makeFace("ceiling", new Color3f(1.0f, 1.0f, 1.0f));  // white
+        
+        // create lines to divide surfaces into 3x3 grids
+        Shape3D grid = makeGrid();
+        
+        // add children to root branch graph
+        objRoot.addChild(floor);
+        objRoot.addChild(back);
+        objRoot.addChild(left);
+        objRoot.addChild(right);
+        objRoot.addChild(front);
+        // objRoot.addChild(ceiling);
+        objRoot.addChild(grid);
+        
+        return objRoot;
+    } // end of method
+
+    // method to create sides and floor of a room
+    private TransformGroup makeFace(String face, Color3f faceColor) {
+        
+        // create standard QuadArray with coordinates for basic surface
+        QuadArray qa = new QuadArray(4, QuadArray.COORDINATES);
+        qa.setCoordinate(0, new Point3f(-15f, 0f, 15f));
+        qa.setCoordinate(1, new Point3f(15f, 0f, 15f));
+        qa.setCoordinate(2, new Point3f(15f, 0f, -15f));
+        qa.setCoordinate(3, new Point3f(-15f, 0f, -15f));
+        
+        // set color for created quad
+        ColoringAttributes ca = new ColoringAttributes(faceColor, 1);
+        Appearance appear = new Appearance();
+        appear.setColoringAttributes(ca);
+        Shape3D shape = new Shape3D(qa, appear);
+        
+        // create ability to transform and translate surface to correct position
+        TransformGroup tg = new TransformGroup();
+        Transform3D t3d = new Transform3D();
+        Transform3D rotate = new Transform3D();
+        
+        // create surface based on input paramaters
+        // surfaces are off by a factor of 0.005 to allow grid lines to be more visible
+        switch (face) {
+            case "floor": t3d.setTranslation(new Vector3f(0f, -15.005f, 0f));
+                tg.setTransform(t3d);
+                tg.addChild(shape);
+                break;
+            case "ceiling": t3d.rotX(Math.PI);
+                t3d.setTranslation(new Vector3f(0f, 15.005f, 0f));                
+                tg.setTransform(t3d);
+                tg.addChild(shape);
+                break;
+            case "left": t3d.rotZ(-Math.PI/2);
+                t3d.setTranslation(new Vector3f(-15.005f, 0f, 0f));
+                tg.setTransform(t3d);
+                tg.addChild(shape);
+                break;
+            case "right": t3d.rotZ(Math.PI/2);
+                t3d.setTranslation(new Vector3f(15.005f, 0f, 0f));
+                tg.setTransform(t3d);
+                tg.addChild(shape);
+                break;
+            case "front": t3d.rotX(-Math.PI/2);
+                t3d.setTranslation(new Vector3f(0f, 0f, 15.005f));                
+                tg.setTransform(t3d);
+                tg.addChild(shape);
+                break;
+            case "back": t3d.rotX(Math.PI/2);
+                t3d.setTranslation(new Vector3f(0f, 0f, -15.005f));                
+                tg.setTransform(t3d);
+                tg.addChild(shape);
+                break;
+            default: return null;
+        }
+        return tg;
+    } // end of makeFace method
+    
+    // makes lines to divide constructed area into 3x3 grid for each side
+    private Shape3D makeGrid() {
+        
+        // set up initial coordinates for z plane grid lines
+        Point3f[] gridCoords = new Point3f[47];
+        gridCoords[0] = new Point3f(-15f, 15f, 15f);
+        gridCoords[1] = new Point3f(-15f, -15f, 15f);
+        gridCoords[2] = new Point3f(15f, -15f, 15f);
+        gridCoords[3] = new Point3f(15f, 15f, 15f);
+        
+        // create remaining grid lines through z plane
+        Point3f adjust = new Point3f(0, 0, -10);
+        for (int i = 4; i < 16; i++) {
+            gridCoords[i] = new Point3f(gridCoords[i - 4]);
+            gridCoords[i].add(adjust);
+        }
+        
+        // set up initial coordinates for x plane grid lines
+        gridCoords[16] = new Point3f(gridCoords[3]);
+        gridCoords[17] = new Point3f(gridCoords[2]);
+        gridCoords[18] = new Point3f(gridCoords[14]);
+        gridCoords[19] = new Point3f(gridCoords[15]);
+        
+        // create remaining grid lines through x plane
+        adjust = new Point3f(-10, 0, 0);
+        for (int i = 20; i < 32; i++) {
+            gridCoords[i] = new Point3f(gridCoords[i - 4]);
+            gridCoords[i].add(adjust);
+        }
+        
+        // set up initial coordinates for y plane grid lines
+        gridCoords[32] = new Point3f(gridCoords[0]);
+        gridCoords[33] = new Point3f(gridCoords[3]);
+        gridCoords[34] = new Point3f(gridCoords[15]);
+        gridCoords[35] = new Point3f(gridCoords[12]);
+        gridCoords[36] = new Point3f(gridCoords[0]);
+        
+        // create remaining grid lines through y plane
+        adjust = new Point3f(0, -10, 0);
+        for (int i = 37; i < 47; i++) {
+            gridCoords[i] = new Point3f(gridCoords[i - 5]);
+            gridCoords[i].add(adjust);
+        }
+        
+        // create array for vertex counts in LineStripArray
+        int[] lineCounts = new int[11];
+        for (int i = 0; i < lineCounts.length; i++) {
+            if (i < 8) {lineCounts[i] = 4;}
+            else {lineCounts[i] = 5;}
+        }
+        
+        // create LineStripArray object to create lines
+        LineStripArray grid = new LineStripArray(47, LineStripArray.COORDINATES, lineCounts);
+        for (int i = 0; i < gridCoords.length; i++) {
+            grid.setCoordinate(i, gridCoords[i]);
+        }
+        
+        return new Shape3D(grid);
+    } // end of makeGrid method
+    
+    private void orbitControls(Canvas3D c)
+    /* OrbitBehaviour allows the user to rotate around the scene, and to
+     zoom in and out.  */
+    {
+        OrbitBehavior orbit = 
+            new OrbitBehavior(c, OrbitBehavior.REVERSE_ALL);
+        orbit.setSchedulingBounds(bounds);
+
+        ViewingPlatform vp = su.getViewingPlatform();
+        vp.setViewPlatformBehavior(orbit);      
+    } // end of orbitControls()
+
+    private void initUserPosition()
+    // Set the user's initial viewpoint using lookAt()
+    {
+        ViewingPlatform vp = su.getViewingPlatform();
+        TransformGroup steerTG = vp.getViewPlatformTransform();
+
+        Transform3D t3d = new Transform3D();
+        steerTG.getTransform(t3d);
+
+        // args are: viewer posn, where looking, up direction
+        t3d.lookAt( new Point3d(0,5,20), new Point3d(0,0,0), new Vector3d(0,1,0));
+        t3d.invert();
+
+        steerTG.setTransform(t3d);
+    } // end of initUserPosition()
+  
+    public static void main(String args[]) {
+        Frame frame = new MainFrame(new MyOwn3D(), 256, 256);
+    } // end of main
+} // end of class
+
+			</fData>
+			<iStatus>
+				SUCCESS
+			<iStatus>
+		</compile_instance>
+	</session_data>
+</mile>

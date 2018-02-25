@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.params=observer
+comment0.target=TennisBall(javax.media.j3d.Canvas3D)
+comment1.params=
+comment1.target=javax.media.j3d.BranchGroup\ getShapes()
+comment2.params=
+comment2.target=javax.media.j3d.TransformGroup\ getSphere()
+comment3.params=
+comment3.target=javax.media.j3d.TransformGroup\ getRot()
+comment4.params=
+comment4.target=float\ getRadius()
+comment5.params=filename\ observer
+comment5.target=javax.media.j3d.ImageComponent2D\ getTexImage(java.lang.String,\ javax.media.j3d.Canvas3D)
+numComments=6

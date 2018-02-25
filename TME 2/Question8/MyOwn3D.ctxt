@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.params=
+comment0.target=MyOwn3D()
+comment1.params=
+comment1.target=javax.media.j3d.BranchGroup\ createSceneGraph()
+comment2.params=face\ faceColor
+comment2.target=javax.media.j3d.TransformGroup\ makeFace(java.lang.String,\ javax.vecmath.Color3f)
+comment3.params=
+comment3.target=javax.media.j3d.Shape3D\ makeGrid()
+comment4.params=c
+comment4.target=void\ orbitControls(javax.media.j3d.Canvas3D)
+comment5.params=
+comment5.target=void\ initUserPosition()
+comment6.params=args
+comment6.target=void\ main(java.lang.String[])
+numComments=7

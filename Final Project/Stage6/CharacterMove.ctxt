@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.params=targetTG\ radius
+comment0.target=CharacterMove(javax.media.j3d.TransformGroup,\ float)
+comment1.params=
+comment1.target=void\ initialize()
+comment2.params=criteria
+comment2.target=void\ processStimulus(java.util.Enumeration)
+comment3.params=eventKey
+comment3.target=void\ processKeyEvent(java.awt.event.KeyEvent)
+comment4.params=x\ z
+comment4.target=void\ doMove(float,\ float)
+comment5.params=v
+comment5.target=boolean\ testMove(javax.vecmath.Vector3f)
+comment6.params=bounds
+comment6.target=void\ addObstacleBounds(javax.media.j3d.Bounds)
+numComments=7

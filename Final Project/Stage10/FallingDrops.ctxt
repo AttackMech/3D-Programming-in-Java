@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.params=rd\ c\ b
+comment0.target=FallingDrops(RainDrops,\ Character,\ Ball)
+comment1.params=
+comment1.target=void\ initialize()
+comment2.params=criteria
+comment2.target=void\ processStimulus(java.util.Enumeration)
+numComments=3

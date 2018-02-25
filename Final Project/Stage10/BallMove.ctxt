@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.params=b\ ball\ c
+comment0.target=BallMove(javax.media.j3d.Behavior,\ Ball,\ Character)
+comment1.params=
+comment1.target=void\ initialize()
+comment2.params=criteria
+comment2.target=void\ processStimulus(java.util.Enumeration)
+numComments=3

@@ -1,0 +1,190 @@
+/**
+*   Title: Room.java
+*   Description: Creates 6 textured surfaces as a 10x10 cube.
+*   Date: February 16, 2014
+*   Author: Jason Bishop
+*   Student #: 3042012
+*   Version: 1.0
+*
+*   Notes:  All surfaces are created such that the are visible from the interior of the room.  No culling has been adjusted so if the
+*   user moves outside the room the will not be able to see the back surfaces.  But since the user can't move it is unecessary.
+*   
+*   Each surface has a slight offset so that there is no interference with the gridlines created.
+*   
+*   Default colours are set for each surface in case the texture fails to load.  The floor is green, the sky is blue, and the walls are
+*   a brownish colour.
+*
+*/
+
+import java.awt.Component;
+import com.sun.j3d.utils.image.*;
+import javax.media.j3d.*;  
+import javax.vecmath.*; 
+
+
+public class Room {
+    
+    private BranchGroup roomRoot;
+    private Component observer;
+    private Texture2D texImage;
+
+    // constructor
+    public Room(Component observer) {
+        
+        // initialise instance variables
+        this.observer = observer;
+
+        // add all surfaces to the environment
+        roomRoot = new BranchGroup();
+        
+        roomRoot.addChild(makeFloor());
+        roomRoot.addChild(makeWalls());
+        roomRoot.addChild(makeCeiling());
+    }  // end of constructor
+    
+    // creates the floor of the room
+    private Shape3D makeFloor() {
+
+        // create 10x10 floor plane
+        QuadArray floorQuad = new QuadArray(4, QuadArray.COORDINATES | QuadArray.TEXTURE_COORDINATE_2);
+        floorQuad.setCoordinate(0, new Point3d(-5, -0.01, 5));
+        floorQuad.setCoordinate(1, new Point3d(5, -0.01, 5));
+        floorQuad.setCoordinate(2, new Point3d(5, -0.01, -5));
+        floorQuad.setCoordinate(3, new Point3d(-5, -0.01, -5));
+        
+        // create and set texture coords
+        TexCoord2f[] texCoords = new TexCoord2f[4];
+        texCoords[0] = new TexCoord2f(0.0f, 0.0f);
+        texCoords[1] = new TexCoord2f(0.0f, 10.0f);
+        texCoords[2] = new TexCoord2f(10.0f, 10.0f);
+        texCoords[3] = new TexCoord2f(10.0f, 0.0f);
+        
+        floorQuad.setTextureCoordinates(0,0,texCoords);
+        
+        // create and set appearance of floor
+        Appearance floorAppear = new Appearance();
+        // load texture file or set color
+        if (getTexImage("grassy.jpg")) {
+            floorAppear.setTexture(texImage);
+        } else {
+            ColoringAttributes ca = new ColoringAttributes(new Color3f(0.0f, 1.0f, 0.0f), 1);
+            floorAppear.setColoringAttributes(ca);
+        }        
+        
+        return new Shape3D(floorQuad, floorAppear);
+    }  // end of method makeFloor()
+    
+    // creates the ceiling of the room
+    private Shape3D makeCeiling() {
+        
+        // create 10x10 ceiling plane
+        QuadArray ceilingQuad = new QuadArray(4, QuadArray.COORDINATES | QuadArray.TEXTURE_COORDINATE_2);
+        ceilingQuad.setCoordinate(0, new Point3d(-5, 10.01, 5));
+        ceilingQuad.setCoordinate(1, new Point3d(-5, 10.01, -5));
+        ceilingQuad.setCoordinate(2, new Point3d(5, 10.01, -5));
+        ceilingQuad.setCoordinate(3, new Point3d(5, 10.01, 5));
+
+        // create and set texture coords
+        TexCoord2f[] texCoords = new TexCoord2f[4];
+        texCoords[0] = new TexCoord2f(0.0f, 0.0f);
+        texCoords[1] = new TexCoord2f(0.0f, 2.0f);
+        texCoords[2] = new TexCoord2f(1.0f, 2.0f);
+        texCoords[3] = new TexCoord2f(1.0f, 0.0f);
+        
+        ceilingQuad.setTextureCoordinates(0,0,texCoords);
+        
+        // create and set appearance of floor
+        Appearance ceilingAppear = new Appearance();
+        // load texture file or set color
+        if (getTexImage("sky.jpg")) {
+            ceilingAppear.setTexture(texImage);
+        } else {
+        
+            ColoringAttributes ca = new ColoringAttributes(new Color3f(0.0f, 0.7f,1.0f), 1);
+            ceilingAppear.setColoringAttributes(ca);
+        }        
+        
+        return new Shape3D(ceilingQuad, ceilingAppear);
+    }  // end of method makeCeiling()
+    
+    // creates all 4 walls of the room
+    private Shape3D makeWalls() {
+        
+        // create four 10x10 walls in one array
+        QuadArray wallsQuad = new QuadArray(16, QuadArray.COORDINATES | QuadArray.TEXTURE_COORDINATE_2);
+
+        // left wall
+        wallsQuad.setCoordinate(0, new Point3d(-5.01, 0, 5)); 
+        wallsQuad.setCoordinate(1, new Point3d(-5.01, 0, -5));
+        wallsQuad.setCoordinate(2, new Point3d(-5.01, 10, -5));
+        wallsQuad.setCoordinate(3, new Point3d(-5.01, 10, 5));
+        
+        // right wall
+        wallsQuad.setCoordinate(4, new Point3d(5.01, 0, 5)); 
+        wallsQuad.setCoordinate(5, new Point3d(5.01, 10, 5));
+        wallsQuad.setCoordinate(6, new Point3d(5.01, 10, -5));
+        wallsQuad.setCoordinate(7, new Point3d(5.01, 0, -5));
+        
+        // front wall
+        wallsQuad.setCoordinate(8, new Point3d(-5, 0, 5.01)); 
+        wallsQuad.setCoordinate(9, new Point3d(-5, 10, 5.01));
+        wallsQuad.setCoordinate(10, new Point3d(5, 10, 5.01));
+        wallsQuad.setCoordinate(11, new Point3d(5, 0, 5.01));
+        
+        // back wall
+        wallsQuad.setCoordinate(12, new Point3d(-5, 0, -5.01)); 
+        wallsQuad.setCoordinate(13, new Point3d(5, 0, -5.01));
+        wallsQuad.setCoordinate(14, new Point3d(5, 10, -5.01));
+        wallsQuad.setCoordinate(15, new Point3d(-5, 10, -5.01));
+
+       // create and set texture coords for all walls
+        TexCoord2f[] texCoords = new TexCoord2f[16];
+        for (int i = 0; i < wallsQuad.getVertexCount(); i += 4) {
+            texCoords[i] = new TexCoord2f(0.0f, 0.0f);
+            texCoords[i + 1] = new TexCoord2f(0.0f, 3.0f);
+            texCoords[i + 2] = new TexCoord2f(3.0f, 3.0f);
+            texCoords[i + 3] = new TexCoord2f(3.0f, 0.0f);
+        }
+        
+        wallsQuad.setTextureCoordinates(0,0,texCoords);
+                
+        // create and set appearance of floor
+        Appearance wallsAppear = new Appearance();
+        // load texture file or set color
+        if (getTexImage("stony.jpg")) {
+            wallsAppear.setTexture(texImage);
+        } else {
+        
+            ColoringAttributes ca = new ColoringAttributes(new Color3f(0.79f, 0.69f, 0.40f), 1);
+            wallsAppear.setColoringAttributes(ca);
+        } 
+        
+        return new Shape3D(wallsQuad, wallsAppear);
+    }  // end of method makeWalls();
+    
+    // retrieves the specified image file and sets it as a texture
+    // returns true/false depending on the success of the loading process
+    private boolean getTexImage(String filename) {
+
+        try {
+            // load texture file
+            TextureLoader loader = new TextureLoader("images\\" + filename, observer);
+            ImageComponent2D image = loader.getImage();
+            texImage = new Texture2D(Texture2D.BASE_LEVEL, Texture2D.RGB, image.getWidth(), image.getHeight());
+            texImage.setImage(0, image);
+            texImage.setEnable(true);
+            return true;
+        } catch (ImageException e) {
+                
+            // check that texture is loaded
+            System.out.println("load failed for texture: " + filename); 
+            return false;
+        }
+
+    } // end of method getTexImage(String)
+    
+    // returns BranchGroup for use in the scene graph
+    public BranchGroup getBG() {
+        return roomRoot;
+    }  // end of method getBG()
+}  // end of class Room

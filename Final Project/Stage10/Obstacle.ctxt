@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.params=s\ r\ o
+comment0.target=Obstacle(float,\ float,\ java.awt.Component)
+comment1.params=filename
+comment1.target=boolean\ getTexImage(java.lang.String)
+comment2.params=x\ z
+comment2.target=void\ setPosition(float,\ float)
+comment3.params=x\ z
+comment3.target=javax.vecmath.Vector3f\ checkPosition(float,\ float)
+comment4.params=
+comment4.target=javax.media.j3d.BranchGroup\ getBG()
+comment5.params=
+comment5.target=javax.media.j3d.Bounds\ getBounds()
+comment6.params=
+comment6.target=javax.media.j3d.BoundingBox\ getBoundingBox()
+numComments=7

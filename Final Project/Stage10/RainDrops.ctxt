@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.params=obs\ charRadius\ ballRadius
+comment0.target=RainDrops(javax.media.j3d.Bounds,\ float,\ float)
+comment1.params=
+comment1.target=void\ makeDrops()
+comment2.params=
+comment2.target=void\ makeSplashes()
+comment3.params=charPosition\ ballPosition
+comment3.target=void\ fall(javax.vecmath.Point3d,\ javax.vecmath.Point3d)
+comment4.params=
+comment4.target=void\ splash()
+comment5.params=
+comment5.target=double\ getRandom()
+comment6.params=
+comment6.target=javax.media.j3d.BranchGroup\ getBG()
+numComments=7

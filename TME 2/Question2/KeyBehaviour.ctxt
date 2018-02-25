@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.params=targetTG\ radius
+comment0.target=KeyBehaviour(javax.media.j3d.TransformGroup,\ float)
+comment1.params=
+comment1.target=void\ initialize()
+comment2.params=criteria
+comment2.target=void\ processStimulus(java.util.Enumeration)
+comment3.params=eventKey
+comment3.target=void\ processKeyEvent(java.awt.event.KeyEvent)
+comment4.params=x\ z
+comment4.target=void\ doMove(float,\ float)
+comment5.params=
+comment5.target=void\ testMove()
+numComments=6

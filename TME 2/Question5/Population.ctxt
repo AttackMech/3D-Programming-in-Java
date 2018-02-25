@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.params=observer
+comment0.target=Population(javax.media.j3d.Canvas3D)
+comment1.params=
+comment1.target=javax.media.j3d.BranchGroup\ getShapes()
+comment2.params=filename\ observer
+comment2.target=javax.media.j3d.ImageComponent2D\ getTexImage(java.lang.String,\ javax.media.j3d.Canvas3D)
+numComments=3

@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.params=observer
+comment0.target=Character(java.awt.Component)
+comment1.params=
+comment1.target=javax.media.j3d.TransformGroup\ createChar()
+comment2.params=filename
+comment2.target=boolean\ getTexImage(java.lang.String)
+comment3.params=
+comment3.target=javax.media.j3d.BranchGroup\ getBG()
+comment4.params=
+comment4.target=javax.media.j3d.TransformGroup\ getPosnTG()
+comment5.params=
+comment5.target=float\ getRadius()
+numComments=6

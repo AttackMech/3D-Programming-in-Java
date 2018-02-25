@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.params=
+comment0.target=Scene()
+comment1.params=observer
+comment1.target=javax.media.j3d.BranchGroup\ createSceneGraph(java.awt.Component)
+comment2.params=
+comment2.target=void\ initUserPosition()
+comment3.params=vp\ c
+comment3.target=void\ cameraControls(com.sun.j3d.utils.universe.ViewingPlatform,\ javax.media.j3d.Canvas3D)
+comment4.params=args
+comment4.target=void\ main(java.lang.String[])
+numComments=5

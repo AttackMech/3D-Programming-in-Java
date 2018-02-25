@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.params=
+comment0.target=Population()
+comment1.params=
+comment1.target=javax.media.j3d.BranchGroup\ getShapes()
+comment2.params=
+comment2.target=javax.media.j3d.TransformGroup\ getSphere()
+comment3.params=
+comment3.target=float\ getRadius()
+numComments=4

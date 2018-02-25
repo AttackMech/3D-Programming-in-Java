@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.params=observer
+comment0.target=Awning(java.awt.Component)
+comment1.params=
+comment1.target=javax.media.j3d.Shape3D\ makeAwning()
+comment2.params=filename
+comment2.target=boolean\ getTexImage(java.lang.String)
+comment3.params=
+comment3.target=javax.media.j3d.BranchGroup\ getBG()
+numComments=4
